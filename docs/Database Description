@@ -1,0 +1,129 @@
+International Transport Container - Database Description
+
+1. Overview
+
+The International Transport Container Database is designed to manage and track international shipments, customers, invoices, routes, ports, employees, containers, and goods. This relational database ensures seamless operations for a global logistics and transport company, handling shipments across different locations efficiently.
+
+2. Tables and Relationships
+
+2.1 Customers (customers)
+	•	Purpose: Stores details of customers who use the shipping services.
+	•	Primary Key: Customer_ID
+	•	Attributes:
+	•	Customer_ID (INT) – Unique identifier for the customer.
+	•	Name (VARCHAR) – Customer’s full name or business entity.
+	•	Address (TEXT) – Customer’s address.
+	•	Email (VARCHAR) – Unique email address.
+	•	Phone (VARCHAR) – Contact phone number.
+	•	Relationships:
+	•	Linked to shipments (Customer_ID).
+	•	Linked to invoices (Customer_ID).
+2.2 Ports (ports)
+	•	Purpose: Stores details of global ports where shipments depart and arrive.
+	•	Primary Key: Port_ID
+	•	Attributes:
+	•	Port_ID (INT) – Unique port identifier.
+	•	Name (VARCHAR) – Name of the port.
+	•	Country (VARCHAR) – Country where the port is located.
+	•	Address (TEXT) – Physical address of the port.
+	•	Branch (VARCHAR) – Name of the branch handling operations.
+	•	Capacity (INT) – Maximum capacity of the port.
+	•	Relationships:
+	•	Linked to routes (Departure_Port, Arrival_Port).
+	•	Linked to shipments (Departure_Port, Arrival_Port).
+2.3 Employees (employees)
+	•	Purpose: Stores information about employees working in different branches (ports).
+	•	Primary Key: Employee_ID
+	•	Attributes:
+	•	Employee_ID (INT) – Unique identifier for the employee.
+	•	First_Name (VARCHAR) – Employee’s first name.
+	•	Last_Name (VARCHAR) – Employee’s last name.
+	•	Position (VARCHAR) – Job position.
+	•	Branch_ID (INT) – Refers to ports(Port_ID), indicating where the employee is stationed.
+	•	Hire_Date (DATE) – Date when the employee was hired.
+
+Relationships:
+•	Linked to ports (Branch_ID)
+2.4 Routes (routes)
+	•	Purpose: Defines transport routes between ports.
+	•	Primary Key: Route_ID
+	•	Attributes:
+	•	Route_ID (INT) – Unique route identifier.
+	•	Departure_Port (INT) – Refers to ports(Port_ID).
+	•	Arrival_Port (INT) – Refers to ports(Port_ID).
+	•	Departure_Time (TIME) – Departure time of the transport.
+	•	Arrival_Time (TIME) – Estimated arrival time.
+	•	Distance_Km (INT) – Distance covered in kilometers.
+	•	Relationships:
+	•	Connected to ports via Departure_Port and Arrival_Port.
+
+2.5 Shipments (shipments)
+	•	Purpose: Manages the shipment records, including tracking and costs.
+	•	Primary Key: Shipment_ID
+	•	Attributes:
+	•	Shipment_ID (INT) – Unique shipment identifier.
+	•	Customer_ID (INT) – Refers to customers(Customer_ID).
+	•	Departure_Port (INT) – Refers to ports(Port_ID).
+	•	Arrival_Port (INT) – Refers to ports(Port_ID).
+	•	Departure_Date (DATE) – Date when the shipment was sent.
+	•	Arrival_Date (DATE) – Estimated delivery date.
+	•	Cost (DECIMAL) – Shipment cost.
+	•	Status (VARCHAR) – Shipment status (In Transit, Delivered, Pending).
+	•	Relationships:
+	•	Connected to customers (Customer_ID).
+	•	Connected to ports (Departure_Port, Arrival_Port).
+	•	Linked to invoices (Shipment_ID).
+2.6 Invoices (invoices)
+	•	Purpose: Stores invoice details for each shipment.
+	•	Primary Key: Invoice_ID
+	•	Attributes:
+	•	Invoice_ID (INT) – Unique invoice identifier.
+	•	Customer_ID (INT) – Refers to customers(Customer_ID).
+	•	Shipment_ID (INT) – Refers to shipments(Shipment_ID).
+	•	Total_Amount (DECIMAL) – Total invoice amount.
+	•	Issue_Date (DATE) – Date when the invoice was issued.
+	•	Payment_Date (DATE) – Due or paid date.
+	•	Relationships:
+	•	Connected to customers (Customer_ID).
+	•	Connected to shipments (Shipment_ID).
+2.7 Containers (containers)
+	•	Purpose: Stores information about shipping containers used for transporting goods.
+	•	Primary Key: Container_ID
+	•	Attributes:
+	•	Container_ID (INT) – Unique container identifier.
+	•	Capacity (INT) – Maximum weight capacity.
+	•	Weight (DECIMAL) – Current weight of the container.
+	•	Type (VARCHAR) – Type of container (Refrigerated, Open-Top, Standard).
+	•	Status (VARCHAR) – Status of the container (Empty, Full, In Use).
+	•	Relationships:
+	•	Connected to goods (Container_ID)
+2.8 Goods (goods)
+	•	Purpose: Stores details of the goods being transported.
+	•	Primary Key: Goods_ID
+	•	Attributes:
+	•	Goods_ID (INT) – Unique identifier for the goods.
+	•	Name (VARCHAR) – Name of the goods.
+	•	Description (TEXT) – Description of the goods.
+	•	Quantity (INT) – Number of goods in the shipment.
+	•	Weight (DECIMAL) – Weight of the goods.
+	•	Container_ID (INT) – Refers to containers(Container_ID).
+	•	Relationships:
+	•	Connected to containers (Container_ID).
+3. Key Features and Benefits
+
+3.1 Efficient Data Organization
+	•	The database uses a relational model, ensuring data consistency and referential integrity.
+	•	Foreign keys enforce correct relationships, avoiding duplicate or orphan records.
+
+3.2 Real-Time Shipment Tracking
+	•	The shipments table allows tracking shipments from departure to arrival, along with their current status.
+
+3.3 Customer & Billing Integration
+	•	Invoices are directly linked to shipments and customers, simplifying financial operations.
+
+3.4 Port and Route Management
+	•	The database allows efficient route planning by linking ports and routes.
+
+3.5 Container and Goods Monitoring
+	•	The system keeps track of available containers and their status (empty, full, in use).
+	•	Each container holds specific goods, ensuring detailed tracking.
