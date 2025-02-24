@@ -1,0 +1,15 @@
+INSERT INTO Hub_Customers (Customer_ID, Customer_HashKey, Load_Date)
+SELECT 
+    Customer_ID,
+    HASHBYTES('SHA2_256', CAST(Customer_ID AS NVARCHAR(50))),
+    GETDATE()
+FROM customers;
+
+INSERT INTO Link_Customer_Shipment (Customer_HashKey, Shipment_HashKey, Link_HashKey, Load_Date)
+SELECT 
+    HASHBYTES('SHA2_256', CAST(Customer_ID AS NVARCHAR(50))),
+    HASHBYTES('SHA2_256', CAST(Shipment_ID AS NVARCHAR(50))),
+    HASHBYTES('SHA2_256', CAST(Customer_ID AS NVARCHAR(50)) + CAST(Shipment_ID AS NVARCHAR(50))),
+    GETDATE()
+FROM shipments;
+
